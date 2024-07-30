@@ -22,34 +22,36 @@ function pack(images: Photo[], columns: number): Photo[][] {
 }
 
 function ImageDisplay() {
-  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [images, setImages] = useState<Photo[]>([]);
 
   useEffect(() => {
     fetch("/api/images")
       .then((res) => res.json())
-      .then((data) => setPhotos(data));
+      .then((data) => setImages(data));
   }, []);
 
-  const columns = useMemo(() => pack(photos, 3), [photos]);
-console.log(photos);
+  const columns = useMemo(() => pack(images, 3), [images]);
+  console.log(images);
 
   return (
     <div className="flex flex-wrap mt-2 px-1">
       {columns.map((column, i) => (
         <div key={i} className="w-1/3 flex flex-col px-1 gap-2">
-          {column.map((p) =>{
+          {column.map((p) => {
             console.log(`/images/${p.image}`);
-            console.log(p, '');
-            
-            return <img
-            src={`/images/${p.image}`}
-            alt={p.image}
-            key={p.image}
-            style={{
-              aspectRatio: `${p.width}/${p.height}`,
-            }}
-            className="w-full rounded-2xl"
-          />
+            console.log(p, "");
+
+            return (
+              <img
+                src={`/images/${p.image}`}
+                alt={p.image}
+                key={p.image}
+                style={{
+                  aspectRatio: `${p.width}/${p.height}`,
+                }}
+                className="w-full rounded-2xl"
+              />
+            );
           })}
         </div>
       ))}
@@ -57,4 +59,6 @@ console.log(photos);
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(<ImageDisplay />);
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <ImageDisplay />
+);
